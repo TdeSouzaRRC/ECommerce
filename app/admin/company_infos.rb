@@ -11,5 +11,5 @@ ActiveAdmin.register CompanyInfo do
 #   permitted << :other if params[:action] == 'create' && current_user.admin?
 #   permitted
 # end
-
+    permit_params :name, :address, :phone_number, :fax_number, :description, :email
 end
