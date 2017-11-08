@@ -12,6 +12,18 @@ ActiveAdmin.register Product do
 #   permitted
 # end
     permit_params :name, :description, :price, :stock_quantity, :category_id, :product_image
-
+form do |f|
+    f.inputs 'Details' do
+        f.input :category
+        f.input :name
+        f.input :description
+        f.input :price
+        f.input :stock_quantity
+    end
+    f.inputs 'Upload' do
+        f.input :product_image, required: true, as: :file
+    end
+    f.actions
+end
 
 end
