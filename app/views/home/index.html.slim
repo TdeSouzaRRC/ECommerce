@@ -1,0 +1,11 @@
+h1 Index
+
+h2 Products
+
+- @products.each do |product| 
+    div.product_display
+        p = image_tag product.product_image.url(:thumb)
+        h3 = link_to product.name, product_path(product)
+        p 
+            ' Price: 
+            = product.price
