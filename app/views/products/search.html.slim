@@ -1,0 +1,9 @@
+div.container-fluid
+    div.row
+        h3
+            = @products.length
+            '  records for " 
+            = @keyword
+            '  "
+    div.row
+        = render "products/products_container", object: @products

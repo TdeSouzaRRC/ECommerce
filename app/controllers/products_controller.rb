@@ -4,15 +4,13 @@ class ProductsController < ApplicationController
   end
 
   def search
-    keyword = sanitize_sql(params["search_for"])
-
+    keyword = params["search_for"]
     if keyword == nil then
       @products = Product.All
     else 
-      @products = Product.where("name LIKE %?% OR description LIKE %?%",keyword,keyword)
+      sanitized_keyword = sanitize_sql_like(keyword)
+      @products = Product.where("name LIKE %?% OR description LIKE %?%",sanitized_keyword,sanitized_keyword)
     end
-
-    render "home/index"
   end
 
   def by_category

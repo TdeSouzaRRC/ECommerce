@@ -1,50 +1,37 @@
- div.body_display
-    div.container-fluid
-        div.row
-            div.col-md-offset-3.col-md-6
-                form action="/products/search" method="GET" class="search_form"                  
-                    div class="input-group"
-                        input type="text" class="form-control" placeholder="Search for..."
-                        span class="input-group-btn"
-                            button class="btn btn-info" type="button"
-                                span class="glyphicon glyphicon-search"
-                            
-                    
 
-        div.row
-            div.col-xs-12.col-sm-12.col-md-12.col-lg-12
-                nav
-                    ul.nav.nav-tabs.nav-justified    
-                        - if @selected_category == nil
-                            li role="presentation" class="active"
-                                = link_to "All", products_path, class:"category_nav"
-                        - else
-                            li role="presentation"
-                                = link_to "All", products_path, class:"category_nav"
+div.container-fluid
+    div.row
+        div.col-md-offset-3.col-md-6
+            form action="/products/search" method="GET" class="search_form"                  
+                div class="input-group"
+                    input type="text" class="form-control" name="search_for" placeholder="Search for..."
+                    span class="input-group-btn"
+                        button class="btn btn-info" type="button"
+                            span class="glyphicon glyphicon-search"
                         
-                        - @categories.each do |category|
-                            -if @selected_category == category.name
-                                li role="presentation" class="active"
-                                    a href="?category=#{category.name}" data-id="#{category.id}" class="category_nav"
-                                        = category.name
-                            -else
-                                li role="presentation"
-                                    a href="?category=#{category.name}" data-id="#{category.id}" class="category_nav"
-                                        = category.name
-        div.row
-            div.products_container
-                - @products.each do |product| 
-                    div.col-md-4.col-lg-3.col-sm-6.col-xs-12
-                        div.product_display
-                            div.add_to_cart
-                                a href="#"
-                                    = image_tag "add_to_cart.png"
-                            p.product_name = link_to product.name, product_path(product)
-                            
-                            div.product_image_container
-                                = link_to "#{ image_tag product.product_image.url(:medium), class: "img-rounded img-responsive"}".html_safe, product_path(product)
-                            
-                            p.product_price.text-center
-                                = format('$%.2f', product.price)
-                            
                 
+
+    div.row
+        div.col-xs-12.col-sm-12.col-md-12.col-lg-12
+            nav
+                ul.nav.nav-tabs.nav-justified    
+                    - if @selected_category == nil
+                        li role="presentation" class="active"
+                            = link_to "All", products_path, class:"category_nav"
+                    - else
+                        li role="presentation"
+                            = link_to "All", products_path, class:"category_nav"
+                    
+                    - @categories.each do |category|
+                        -if @selected_category == category.name
+                            li role="presentation" class="active"
+                                a href="?category=#{category.name}" data-id="#{category.id}" class="category_nav"
+                                    = category.name
+                        -else
+                            li role="presentation"
+                                a href="?category=#{category.name}" data-id="#{category.id}" class="category_nav"
+                                    = category.name
+    div.row
+        = render "products/products_container", object: @products
+                        
+            

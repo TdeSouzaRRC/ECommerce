@@ -1,0 +1,14 @@
+div.products_container
+            - @products.each do |product| 
+                div.col-md-4.col-lg-3.col-sm-6.col-xs-12
+                    div.product_display
+                        div.add_to_cart
+                            a href="#"
+                                = image_tag "add_to_cart.png"
+                        p.product_name = link_to product.name, product_path(product)
+                        
+                        div.product_image_container
+                            = link_to "#{ image_tag product.product_image.url(:medium), class: "img-rounded img-responsive"}".html_safe, product_path(product)
+                        
+                        p.product_price.text-center
+                            = format('$%.2f', product.price)
