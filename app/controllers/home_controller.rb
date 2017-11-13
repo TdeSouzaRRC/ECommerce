@@ -1,7 +1,16 @@
 class HomeController < ApplicationController
   def index
-    @products = Product.all
     @categories = Category.all
+
+    if params["category"] != nil then
+      @categories.each do |category|
+        if category.name == params["category"] then
+          @products = category.products
+        end
+      end
+    else
+      @products = Product.all
+    end
   end
 
   def about

@@ -6,8 +6,8 @@ div.row
                     a href="#"
                         ' All
                 - @categories.each do |category|
-                    li role="presentation"
-                        a href="#"
+                    li role="presentation" 
+                        a href="#" data-id="#{category.id}" class="category_nav"
                             = category.name
                 
 
@@ -22,7 +22,8 @@ div.row
                     p.product_name = link_to product.name, product_path(product)
                     
                     div.product_image_container
-                        = image_tag product.product_image.url(:medium), class: "img-rounded img-responsive"
+                        = link_to "#{ image_tag product.product_image.url(:medium), class: "img-rounded img-responsive"}".html_safe, product_path(product)
+                            / = image_tag product.product_image.url(:medium), class: "img-rounded img-responsive"
                     
                     p.product_price.text-center
                         = format('$%.2f', product.price)
