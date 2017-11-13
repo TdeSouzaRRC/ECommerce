@@ -1,4 +1,4 @@
-$(function(){
+/*$(function(){
     $(".category_nav").click(function(event){
         event.preventDefault();
 
@@ -29,4 +29,4 @@ $(function(){
 
             });
     })
-});
+});*/

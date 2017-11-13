@@ -15,13 +15,22 @@
             div.col-xs-12.col-sm-12.col-md-12.col-lg-12
                 nav
                     ul.nav.nav-tabs.nav-justified    
-                        li role="presentation" class="active"
-                            = link_to "All", products_path, class:"category_nav"
+                        - if @selected_category == nil
+                            li role="presentation" class="active"
+                                = link_to "All", products_path, class:"category_nav"
+                        - else
+                            li role="presentation"
+                                = link_to "All", products_path, class:"category_nav"
+                        
                         - @categories.each do |category|
-                            li role="presentation" 
-                                a href="#" data-id="#{category.id}" class="category_nav"
-                                    = category.name
-        
+                            -if @selected_category == category.name
+                                li role="presentation" class="active"
+                                    a href="?category=#{category.name}" data-id="#{category.id}" class="category_nav"
+                                        = category.name
+                            -else
+                                li role="presentation"
+                                    a href="?category=#{category.name}" data-id="#{category.id}" class="category_nav"
+                                        = category.name
         div.row
             div.products_container
                 - @products.each do |product| 
