@@ -6,14 +6,13 @@ div.container-fluid
         p.search_result
             = @products.count
             -if @products.count > 1
-                '  products for "
+                '  products for searching "
             -else
-                '  products for "
+                '  product for searching "
             = @keyword
-            '  " seach
-            -if @selected_category != ""
-                ' in " 
-                = @selected_category_name
-                '  " category.
+            '  " keyword
+            ' in " 
+            = @selected_category_name
+            '  " category.
     div.row
         = render "products/products_container", object: @products

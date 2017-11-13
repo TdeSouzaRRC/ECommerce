@@ -7,25 +7,27 @@ class ProductsController < ApplicationController
     @categories = Category.all
     
     @selected_category = params["category"]
-    @selected_category_name = Category.find(params["category"]).name
+    @selected_category_name = "All"
     @keyword = params["search_for"]
     like_keyword = "%"+ @keyword + "%"
 
     if (@keyword == "") && (@selected_category == "")  then
 
-      @products = Product.all
+      @products = Product.all.order(:name)
     
     elsif (@keyword == "") && (@selected_category != "") then
     
-      @products = Category.find(@selected_category).products
+      @selected_category_name = Category.find(params["category"]).name
+      @products = Category.find(@selected_category).products.order(:name)
     
     elsif (@keyword != "") && (@selected_category == "")
     
-      @products = Product.where("name LIKE ? OR description LIKE ?", like_keyword, like_keyword)
+      @products = Product.where("name LIKE ? OR description LIKE ?", like_keyword, like_keyword).order(:name)
     
     else  
 
-      @products = Product.where("(name LIKE ? OR description LIKE ?) AND category_id = ?", like_keyword, like_keyword, @selected_category)
+      @selected_category_name = Category.find(params["category"]).name
+      @products = Product.where("(name LIKE ? OR description LIKE ?) AND category_id = ?", like_keyword, like_keyword, @selected_category).order(:name)
     
     end
   end
