@@ -4,13 +4,29 @@ class ProductsController < ApplicationController
   end
 
   def search
-    @keyword = params["search_for"]
+    @categories = Category.all
     
-    if @keyword == nil then
-      @products = Product.All
-    else
-      like_keyword = "%"+ @keyword + "%"
+    @selected_category = params["category"]
+    @selected_category_name = Category.find(params["category"]).name
+    @keyword = params["search_for"]
+    like_keyword = "%"+ @keyword + "%"
+
+    if (@keyword == "") && (@selected_category == "")  then
+
+      @products = Product.all
+    
+    elsif (@keyword == "") && (@selected_category != "") then
+    
+      @products = Category.find(@selected_category).products
+    
+    elsif (@keyword != "") && (@selected_category == "")
+    
       @products = Product.where("name LIKE ? OR description LIKE ?", like_keyword, like_keyword)
+    
+    else  
+
+      @products = Product.where("(name LIKE ? OR description LIKE ?) AND category_id = ?", like_keyword, like_keyword, @selected_category)
+    
     end
   end
 

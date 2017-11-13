@@ -3,13 +3,17 @@ div.container-fluid
         = render "home/search_form"
 
     div.row
-        h3
+        p.search_result
             = @products.count
             -if @products.count > 1
-                '  records for "
+                '  products for "
             -else
-                '  record for "
+                '  products for "
             = @keyword
-            '  "
+            '  " seach
+            -if @selected_category != ""
+                ' in " 
+                = @selected_category_name
+                '  " category.
     div.row
         = render "products/products_container", object: @products
