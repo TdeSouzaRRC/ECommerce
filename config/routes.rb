@@ -10,7 +10,8 @@ Rails.application.routes.draw do
   get "/contact", to: "home#contact", as:"contact"
   get "/products/:id", to: "products#show", as:"product", id: /\d+/
   get "/", to: "home#index", as: "products" 
-  get "products", to: "products#index"
+  get "/products/by_category/:id", to: "products#by_category", id: /\d+/
+
   # For details on the DSL available within this file, see http://guides.rubyonrails.org/routing.html
 end
 
