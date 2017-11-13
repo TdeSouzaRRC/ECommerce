@@ -9,6 +9,8 @@ Rails.application.routes.draw do
   get "/about", to: "home#about", as:"about"
   get "/contact", to: "home#contact", as:"contact"
   get "/products/:id", to: "products#show", as:"product", id: /\d+/
+  get "/", to: "home#index", as: "products" 
+  get "products", to: "products#index"
   # For details on the DSL available within this file, see http://guides.rubyonrails.org/routing.html
 end
 

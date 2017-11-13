@@ -11,5 +11,20 @@ ActiveAdmin.register CompanyInfo do
 #   permitted << :other if params[:action] == 'create' && current_user.admin?
 #   permitted
 # end
-    permit_params :name, :address, :phone_number, :fax_number, :description, :email
+    permit_params :name, :address, :phone_number, :fax_number, :description, :email, :company_logo
+
+    form do |f|
+        f.inputs 'Details' do
+            f.input :name
+            f.input :address
+            f.input :phone_number
+            f.input :fax_number
+            f.input :email
+            f.input :description
+        end
+        f.inputs 'Upload' do
+            f.input :company_logo, required: true, as: :file
+        end
+        f.actions
+    end
 end

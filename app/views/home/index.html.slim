@@ -1,11 +1,30 @@
-h1 Index
+div.row
+    div.col-xs-12.col-sm-12.col-md-12.col-lg-12
+        nav
+            ul.nav.nav-tabs.nav-justified    
+                li role="presentation" class="active"
+                    a href="#"
+                        ' All
+                - @categories.each do |category|
+                    li role="presentation"
+                        a href="#"
+                            = category.name
+                
 
-h2 Products
-
-- @products.each do |product| 
-    div.product_display
-        p = image_tag product.product_image.url(:thumb)
-        h3 = link_to product.name, product_path(product)
-        p 
-            ' Price: 
-            = product.price
+div.row
+    div.products_container
+        - @products.each do |product| 
+            div.col-md-4.col-lg-3.col-sm-6.col-xs-12
+                div.product_display
+                    div.add_to_cart
+                        a href="#"
+                            = image_tag "add_to_cart.png"
+                    p.product_name = link_to product.name, product_path(product)
+                    
+                    div.product_image_container
+                        = image_tag product.product_image.url(:medium), class: "img-rounded img-responsive"
+                    
+                    p.product_price.text-center
+                        = format('$%.2f', product.price)
+                    
+                    

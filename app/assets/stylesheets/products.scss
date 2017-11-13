@@ -2,10 +2,43 @@
 // They will automatically be included in application.css.
 // You can use Sass (SCSS) here: http://sass-lang.com/
 
+.products_container {
+    padding: 10px;
+}
+
 .product_display {
-    border: 1px solid black;
+    border: 1px solid lightgray;
     border-radius: 5px;
-    padding: 5px;
-    margin: 5px;
-    width: 300px;
+    box-shadow: -3px 3px 10px lightgray;
+    padding: 10px;
+    max-width: 320px;
+    
+}
+
+.product_image_container{
+    max-width: 299px;
+    height: 299px;
+}
+
+.product_name {
+    font-family: "Century", "Garamond", Serif;
+    font-size: 14pt;
+    margin-bottom: 15px;
+
+    a:link, a:visited, a:hover, a:active {
+        text-decoration: none;
+        color: steelblue;
+    }
+}
+
+.product_price {
+    margin: 6px;
+    font-size: 18pt;
+    font-family: "Century", sans-serif;
+    color: #0077b3;
+    text-shadow: 2px 2px 1px rgb(169, 201, 243);
+}
+
+.add_to_cart {
+    float: right;
 }

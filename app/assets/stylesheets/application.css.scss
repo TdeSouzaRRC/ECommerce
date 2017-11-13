@@ -14,5 +14,23 @@
  *= require_self
  */
 
- @import "bootstrap-sprocket";
+ @import "bootstrap-sprockets";
  @import "bootstrap";
+
+.body_display {
+    margin: 20px;
+    padding: 20px;
+    border-left: 1px solid lightgray;
+    border-bottom: 1px solid lightgray;
+    border-radius: 0px 0px 0px 20px;
+    
+    -webkit-box-shadow: -10px 10px 67px 0px rgba(200,221,240,0.66);
+    -moz-box-shadow: -10px 10px 67px 0px rgba(200,221,240,0.66);
+    box-shadow: -10px 10px 67px 0px rgba(200,221,240,0.66);
+}
+
+.navbar-nav li a {
+    height: 70px;
+    margin-top: 7px;
+    font-size: 14pt;
+}
