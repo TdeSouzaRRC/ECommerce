@@ -1,8 +1,14 @@
 div.container-fluid
     div.row
+        = render "home/search_form"
+
+    div.row
         h3
-            = @products.length
-            '  records for " 
+            = @products.count
+            -if @products.count > 1
+                '  records for "
+            -else
+                '  record for "
             = @keyword
             '  "
     div.row
