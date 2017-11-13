@@ -1,0 +1,10 @@
+---
+:CompanyInfo:
+  :company_logo:
+  - :medium
+  - :thumb
+:Product:
+  :product_image:
+  - :large
+  - :medium
+  - :thumb
