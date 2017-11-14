@@ -1,4 +1,6 @@
 class ProductsController < ApplicationController
+  before_action :initialize_session, only: [:add_product_to_cart]
+
   def show 
     @product = Product.find(params[:id])
   end
@@ -43,5 +45,15 @@ class ProductsController < ApplicationController
     render json: @products
   end
 
+  def add_product_to_cart
+    session[:cart] << params[:id] unless session[:cart].include?(params[:id])
+
+    redirect_back(fallback_location: root_path)
+  end
   
+  private
+
+  def initialize_session
+    session[:cart] ||= []
+  end
 end
