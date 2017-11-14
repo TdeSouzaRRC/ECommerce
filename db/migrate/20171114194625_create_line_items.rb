@@ -1,7 +1,7 @@
 class CreateLineItems < ActiveRecord::Migration[5.1]
   def change
     create_table :line_items do |t|
-      t.Fixnum :quantity
+      t.integer :quantity
       t.decimal :price
 
       t.timestamps
