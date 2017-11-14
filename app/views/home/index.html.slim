@@ -3,8 +3,6 @@ div.container-fluid
     div.row
         = render "search_form"
                         
-                
-
     div.row
         div.col-xs-12.col-sm-12.col-md-12.col-lg-12
             nav
@@ -25,7 +23,6 @@ div.container-fluid
                             li role="presentation"
                                 a href="?category=#{category.name}" data-id="#{category.id}" class="category_nav"
                                     = category.name
+
     div.row
         = render "products/products_container", object: @products
-                        
-            

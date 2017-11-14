@@ -4,15 +4,7 @@ div.container-fluid
 
     div.row
         p.search_result
-            = @products.count
-            -if @products.count > 1
-                '  products for searching "
-            -else
-                '  product for searching "
-            = @keyword
-            '  " keyword
-            ' in " 
-            = @selected_category_name
-            '  " category.
+            = "Searching for '#{@keyword}' in '#{@selected_category_name}' category found #{pluralize(@products.count, "product")}"
+    
     div.row
         = render "products/products_container", object: @products
