@@ -7,7 +7,8 @@ div.container-fluid
             div.col-md-12
                 h3.bg-info.center-block.text-center There are no items in the cart
     - else
-        form id="cart_form" method="POST" action="./checkout"
+        form id="cart_form" method="POST" action="./summary_build"
+            = hidden_field_tag :authenticity_token, form_authenticity_token
             - @products.each do |product|
                 div.row
                     div.col-md-8.order_item
@@ -35,6 +36,8 @@ div.container-fluid
             
             div.row
                 div.col-md-offset-4.col-md-4
-                    link_to "Refresh", 
                     p
                         ' Subtotal: 10000
+            div.row
+                div.col-md-offset-4.col-md-4
+                    input type="submit" form="cart_form" class="btn btn-info" value="Checkout"
