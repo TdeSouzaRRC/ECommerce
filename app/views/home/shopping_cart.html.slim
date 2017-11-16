@@ -1,0 +1,40 @@
+h2 Shopping Cart
+
+div.container-fluid
+
+    - if @products.count == 0
+        div.row
+            div.col-md-12
+                h3.bg-info.center-block.text-center There are no items in the cart
+    - else
+        form id="cart_form" method="POST" action="./checkout"
+            - @products.each do |product|
+                div.row
+                    div.col-md-8.order_item
+                        div.row
+                            div.col-md-1
+                                p
+                                    = image_tag product.product_image(:thumb), class:"img-rounded"
+
+                            div.col-md-2
+                                h3
+                                    = product.name
+                                p
+                                    = link_to "Remove", remove_from_cart_path(product), method: :post
+
+                            div.col-md-2
+                                h4
+                                    = format('CDN$ %.2f', product.price)
+                            
+                            div.col-md-2
+                                div.form-group
+                                    label for="quantity"
+                                        ' Qty: 
+                                    input form="cart_form" type="number" name="line_item[][quantity]" class="form-control" min=1 value=1
+                                    input form="cart_form" type="hidden" name="line_item[][product_id]" value="#{product.id}"
+            
+            div.row
+                div.col-md-offset-4.col-md-4
+                    link_to "Refresh", 
+                    p
+                        ' Subtotal: 10000

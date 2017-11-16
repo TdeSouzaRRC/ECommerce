@@ -17,4 +17,10 @@ nav class="navbar navbar-default"
         li
             = link_to "Contact", contact_path
         
-
+      ul class="nav navbar-nav navbar-right"
+        li
+          span class="badge"
+            = session[:cart].count
+        li
+          = link_to "#{image_tag "shopping_cart.png", size: "45x45", class:"img-rounded"}".html_safe, shopping_cart_path, class: "navbar_shopping_cart"
+          

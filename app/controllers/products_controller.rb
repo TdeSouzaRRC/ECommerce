@@ -1,6 +1,4 @@
 class ProductsController < ApplicationController
-  before_action :initialize_session, only: [:add_product_to_cart]
-
   def show 
     @product = Product.find(params[:id])
   end
@@ -50,10 +48,10 @@ class ProductsController < ApplicationController
 
     redirect_back(fallback_location: root_path)
   end
-  
-  private
 
-  def initialize_session
-    session[:cart] ||= []
+  def remove_product_from_cart
+    session[:cart].delete(params[:id]) unless session[:cart].include?(params[:id]) == false
+
+    redirect_back(fallback_location: shopping_cart_path)
   end
 end

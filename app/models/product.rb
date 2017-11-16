@@ -4,5 +4,5 @@ class Product < ApplicationRecord
 
     validates :name, :description, :stock_quantity, :price, :product_image, presence: true
     belongs_to :category
-    belongs_to :line_items
+    has_many :line_items
 end

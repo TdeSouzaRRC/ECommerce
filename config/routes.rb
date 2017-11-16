@@ -6,13 +6,19 @@ Rails.application.routes.draw do
   
   root to: 'home#index'
 
+  get "/", to: "home#index", as: "products" 
+  get "/shopping_cart", to: "home#shopping_cart", as: "shopping_cart"
   get "/about", to: "home#about", as:"about"
   get "/contact", to: "home#contact", as:"contact"
+
   get "/products/:id", to: "products#show", as:"product", id: /\d+/
-  get "/", to: "home#index", as: "products" 
   get "/products/by_category/:id", to: "products#by_category", id: /\d+/
   get "/products/search", to: "products#search"
+
   post "/products/:id/add_to_cart", to: "products#add_product_to_cart" , as: "add_to_cart", id: /\d+/
+  post "/products/:id/remove_from_cart", to: "products#remove_product_from_cart" , as: "remove_from_cart", id: /\d+/
+  post "/home/checkout", to: "home#checkout", as: "checkout"
+  
   # For details on the DSL available within this file, see http://guides.rubyonrails.org/routing.html
 end
 

@@ -1,4 +1,6 @@
 class HomeController < ApplicationController
+  before_action :initialize_session, only: [:index]
+
   def index
     @categories = Category.all.order(:name)
     @selected_category = nil;
@@ -20,5 +22,15 @@ class HomeController < ApplicationController
 
   def contact
     @company_info = CompanyInfo.first
+  end
+
+  def shopping_cart
+    @products = Product.find(session[:cart])
+  end
+
+  private 
+
+  def initialize_session
+    session[:cart] ||= []
   end
 end
