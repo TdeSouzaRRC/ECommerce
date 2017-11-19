@@ -25,32 +25,51 @@ class HomeController < ApplicationController
   end
 
   def shopping_cart
-    @products = Product.find(session[:cart])
+    @products = Product.find(session[:cart].keys)
+    @subtotal = 0
+
+    @products.each do |product|
+      @subtotal += product.price * session[:cart][product.id.to_s].to_i
+    end
   end
 
-  def summary_build
-    line_items = []
+  def login
 
-    params[:line_item].each do |item|
-      product = Product.find(item["product_id"])
+  end
 
-      unless(product.nil?) then
-        temp_line_item = LineItem.new
-        temp_line_item.quantity = item["quantity"]
-        temp_line_item.price = product.price * temp_line_item.quantity
-        temp_line_item.product_id = product.id
-        line_items << temp_line_item
+  def checkout
+    unless !session[:user_logged_in].nil? false then
+      redirect_to login_path
+    end
+
+    order_items = []
+    subtotal = 0;
+
+    session[:cart].keys.each do |item|
+      product = Product.find(item)
+      quantity = session[:cart][item].to_i
+
+      unless(product.nil?) then    
+        order_item = {
+          "product_name" => product.name,
+          "quantity" => quantity,
+          "price" => product.price,
+          "total_price" => quantity*product.price
+        }
+        order_items << order_item
+        subtotal += quantity*product.price
       end
     end
     
-    session[:line_items] = line_items
-    
-    redirect_to checkout_path
+    session[:line_items] = {
+      "order_items" => order_items,
+      "subtotal" => subtotal
+    } 
   end
 
   private 
 
   def initialize_session
-    session[:cart] ||= []
+    session[:cart] ||= {}
   end
 end

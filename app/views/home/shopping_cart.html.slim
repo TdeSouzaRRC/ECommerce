@@ -7,37 +7,35 @@ div.container-fluid
             div.col-md-12
                 h3.bg-info.center-block.text-center There are no items in the cart
     - else
-        form id="cart_form" method="POST" action="./summary_build"
-            = hidden_field_tag :authenticity_token, form_authenticity_token
-            - @products.each do |product|
-                div.row
-                    div.col-md-8.order_item
-                        div.row
-                            div.col-md-1
-                                p
-                                    = image_tag product.product_image(:thumb), class:"img-rounded"
-
-                            div.col-md-2
-                                h3
-                                    = product.name
-                                p
-                                    = link_to "Remove", remove_from_cart_path(product), method: :post
-
-                            div.col-md-2
-                                h4
-                                    = format('CDN$ %.2f', product.price)
-                            
-                            div.col-md-2
-                                div.form-group
-                                    label for="quantity"
-                                        ' Qty: 
-                                    input form="cart_form" type="number" name="line_item[][quantity]" class="form-control" min=1 value=1
-                                    input form="cart_form" type="hidden" name="line_item[][product_id]" value="#{product.id}"
-            
+        - @products.each  do |product|
             div.row
-                div.col-md-offset-4.col-md-4
-                    p
-                        ' Subtotal: 10000
-            div.row
-                div.col-md-offset-4.col-md-4
-                    input type="submit" form="cart_form" class="btn btn-info" value="Checkout"
+                div.col-md-6.order_item
+                    div.row
+                        div.col-md-2
+                            p
+                                = image_tag product.product_image(:thumb), class:"img-rounded"
+
+                        div.col-md-3
+                            h3
+                                = product.name
+                            p
+                                = link_to "Remove", remove_from_cart_path(product), method: :post
+
+                        div.col-md-3
+                            h4
+                                = format('CDN$ %.2f', product.price)
+                        
+                        div.col-md-3
+                            => link_to " - ", remove_product_quantity_from_cart_path(product), method: :post, class: "btn btn-default quantity_btn"
+                            '  
+                            =  session[:cart][product.id.to_s] 
+                            '  
+                            =< link_to " + ", add_product_quantity_to_cart_path(product), method: :post, class: "btn btn-default quantity_btn"
+        div.row
+            div.col-md-offset-2.col-md-4.order_item.subtotal_display
+                    h3
+                        b Subtotal: 
+                        = @subtotal
+        div.row
+            div.col-md-offset-4.col-md-4
+                = link_to "Checkout", checkout_path, class:"btn btn-info"

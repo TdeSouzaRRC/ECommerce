@@ -44,14 +44,25 @@ class ProductsController < ApplicationController
   end
 
   def add_product_to_cart
-    session[:cart] << params[:id] unless session[:cart].include?(params[:id])
-
+    # session[:cart] << params[:id] unless session[:cart].include?(params[:id])
+    session[:cart][params[:id]] = 1 unless session[:cart].has_key?(params[:id])
     redirect_back(fallback_location: root_path)
   end
 
   def remove_product_from_cart
-    session[:cart].delete(params[:id]) unless session[:cart].include?(params[:id]) == false
+    session[:cart].delete(params[:id]) unless session[:cart].has_key?(params[:id]) == false
 
     redirect_back(fallback_location: shopping_cart_path)
   end
+
+  def add_product_quantity_to_cart
+    session[:cart][params[:id]] += 1
+    redirect_back(fallback_location: root_path)
+  end
+
+  def remove_product_quantity_from_cart
+    session[:cart][params[:id]] -= 1 unless session[:cart][params[:id]] <= 1
+    redirect_back(fallback_location: root_path)
+  end
+
 end

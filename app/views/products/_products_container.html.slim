@@ -11,4 +11,4 @@ div.products_container
                     = link_to "#{ image_tag product.product_image.url(:medium), class: "img-rounded img-responsive"}".html_safe, product_path(product)
                 
                 p.product_price.text-center
-                    = format('$%.2f', product.price)
+                    = format('CDN$ %.2f', product.price)
