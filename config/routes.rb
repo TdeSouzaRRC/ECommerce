@@ -25,6 +25,7 @@ Rails.application.routes.draw do
   post "/login", to: "home#login", as: "login_process"
   post "/register", to: "home#register", as:"register_process"
 
+  resources :charges
   # For details on the DSL available within this file, see http://guides.rubyonrails.org/routing.html
 end
 

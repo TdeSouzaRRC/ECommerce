@@ -67,13 +67,14 @@ class HomeController < ApplicationController
       @customer = Customer.find(session[:user_logged_in])
       @order_items = []
       @subtotal = 0;
-  
+      
       session[:cart].keys.each do |item|
         product = Product.find(item)
         quantity = session[:cart][item].to_i
-  
-        unless(product.nil?) then    
+        
+        unless(product.nil?) then
           order_item = {
+            "roduct_id" => product.id,
             "product_name" => product.name,
             "quantity" => quantity,
             "price" => product.price,
@@ -87,7 +88,41 @@ class HomeController < ApplicationController
       @pst = @subtotal * @customer.province.pst.to_f
       @gst = @subtotal * @customer.province.gst.to_f
       @hst = @subtotal * @customer.province.hst.to_f
-      @total = @subtotal + @pst + @gst + @hst 
+      @total = @subtotal + @pst + @gst + @hst
+      
+      # Checks if an order was not created yet
+      if session["order"].nil?
+        order = Order.create( 
+          :pst_rate => @customer.province.pst,
+          :gst_rate => @customer.province.gst,
+          :hst_rate => @customer.province.hst,
+          :customer_id => @customer.id
+        )
+        
+        @order_items.each do |item|
+          order.line_items.create(:quantity => item["quantity"], :price => item["price"], :product_id => item["product_id"])    
+        end
+
+        session["order"] = order.id
+      else
+        # In case of order not completed and changed
+        # Updates order with new information
+        order = Order.find(session["order"]) 
+        order.pst_rate = @customer.province.pst
+        order.gst_rate = @customer.province.gst
+        order.hst_rate = @customer.province.hst
+        order.customer_id = @customer.id
+
+        # Destroys all order items
+        order.line_items.each do |item|
+          item.destroy
+        end
+        
+        # Recreates all order items
+        @order_items.each do |item|
+          order.line_items.create(:quantity => item["quantity"], :price => item["price"], :product_id => item["product_id"])    
+        end
+      end
     end    
   end
 

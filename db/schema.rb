@@ -64,7 +64,7 @@ ActiveRecord::Schema.define(version: 20171119031011) do
     t.integer "company_logo_file_size"
     t.datetime "company_logo_updated_at"
   end
-
+0
   create_table "customers", force: :cascade do |t|
     t.string "full_name"
     t.string "address"
