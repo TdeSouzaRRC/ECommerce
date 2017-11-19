@@ -35,8 +35,16 @@ class HomeController < ApplicationController
 
   def register
     if request.post?
-      
+      @customer = Customer.new(params["customer"])
+      if @customer.valid?
+        redirect_to login_path
+      else
+        # redirect_back fallback_location: register_path
+      end
     else
+      @customer = Customer.new
+    end
+
   end
 
   def login
