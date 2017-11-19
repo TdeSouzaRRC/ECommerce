@@ -1,11 +1,49 @@
 .container-fluid
     .row
-        .col-md-8
-            = debug session[:cart]
-            = debug session[:line_items]
-            section id="subtotal"
-                - session[:line_items]["order_items"].each do |item|
-                    p
-                        = "#{item["product_name"]} ............... #{item["quantity"]} x #{format("$ %.2f",item["price"].to_f)} = #{format("$ %.2f", item["total_price"].to_f)}"
+        .col-md-3
+            h3 Order Summary
+
+            br
+
+            - @order_items.each do |item|
                 p
-                    = "Subtotal: #{format("CDN$ %.2f", session[:line_items]["subtotal"].to_f)}"
+                    = "#{item["product_name"]} ............... #{item["quantity"]} x #{format("$ %.2f",item["price"].to_f)} = #{format("$ %.2f", item["total_price"].to_f)}"
+            
+            hr
+            
+            p
+                = "Subtotal: #{format("$ %.2f", @subtotal.to_f)}"
+            - if @pst > 0 then
+                p
+                    = "PST: #{format("$ %.2f", @pst.to_f)}"
+            - if @gst > 0 then
+                p
+                    = "GST: #{format("$ %.2f", @gst.to_f)}"
+            - if @hst > 0 then
+                p
+                    = "HST: #{format("$ %.2f", @hst.to_f)}"
+            p
+                = "Total: #{format("$ %.2f", @total.to_f)}"
+        .col-md-offset-1.col-md-3
+            h3 Shipping Information
+
+            br
+
+            p
+                b Name: 
+                = @customer.full_name
+            p
+                b Address: 
+                = @customer.address
+            p
+                b City: 
+                = @customer.city
+            p
+                b Province: 
+                = @customer.province.name
+            p
+                b Country: 
+                = @customer.country
+
+        .col-md-offset-1.col-md-3
+            h3 Payment

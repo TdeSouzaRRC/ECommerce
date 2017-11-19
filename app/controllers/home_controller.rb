@@ -33,38 +33,54 @@ class HomeController < ApplicationController
     end
   end
 
-  def login
+  def register
+    if request.post?
+      
+    else
+  end
 
+  def login
+    @error_message = false
+    if request.post? then
+      user = UserLogin.find_by "email = ? and password = ?", params["email"], params["password"]
+      unless user.nil? then
+        session[:user_logged_in] = user.customer.id
+        redirect_to checkout_path
+      else
+        @error_message = true
+      end
+    end
   end
 
   def checkout
-    unless !session[:user_logged_in].nil? false then
+    if session[:user_logged_in].nil? then
       redirect_to login_path
-    end
-
-    order_items = []
-    subtotal = 0;
-
-    session[:cart].keys.each do |item|
-      product = Product.find(item)
-      quantity = session[:cart][item].to_i
-
-      unless(product.nil?) then    
-        order_item = {
-          "product_name" => product.name,
-          "quantity" => quantity,
-          "price" => product.price,
-          "total_price" => quantity*product.price
-        }
-        order_items << order_item
-        subtotal += quantity*product.price
+    else
+      @customer = Customer.find(session[:user_logged_in])
+      @order_items = []
+      @subtotal = 0;
+  
+      session[:cart].keys.each do |item|
+        product = Product.find(item)
+        quantity = session[:cart][item].to_i
+  
+        unless(product.nil?) then    
+          order_item = {
+            "product_name" => product.name,
+            "quantity" => quantity,
+            "price" => product.price,
+            "total_price" => quantity*product.price
+          }
+          @order_items << order_item
+          @subtotal += quantity*product.price
+        end
       end
-    end
-    
-    session[:line_items] = {
-      "order_items" => order_items,
-      "subtotal" => subtotal
-    } 
+      
+      @pst = @subtotal * @customer.province.pst.to_f
+      @gst = @subtotal * @customer.province.gst.to_f
+      @hst = @subtotal * @customer.province.hst.to_f
+      @total = @subtotal + @pst + @gst + @hst 
+    end    
   end
 
   private 

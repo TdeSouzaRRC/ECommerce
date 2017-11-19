@@ -16,6 +16,10 @@ nav class="navbar navbar-default"
             = link_to "About", about_path
         li
             = link_to "Contact", contact_path
+        -unless session[:user_logged_in].nil?
+            li
+                a href="#"
+                  ' Logout
         
       ul class="nav navbar-nav navbar-right"
         li

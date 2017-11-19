@@ -14,6 +14,7 @@ Rails.application.routes.draw do
   get "/products/:id", to: "products#show", as:"product", id: /\d+/
   get "/products/by_category/:id", to: "products#by_category", id: /\d+/
   get "/products/search", to: "products#search"
+  get "/register", to: "home#register", as:"register"
   get "/shopping_cart", to: "home#shopping_cart", as: "shopping_cart"
 
   post "/products/:id/add_to_cart", to: "products#add_product_to_cart" , as: "add_to_cart", id: /\d+/
@@ -21,8 +22,8 @@ Rails.application.routes.draw do
   post "/products/:id/add_product_quantity_to_cart", to:"products#add_product_quantity_to_cart" , as: "add_product_quantity_to_cart", id: /\d+/
   post "/products/:id/remove_product_quantity_from_cart", to:"products#remove_product_quantity_from_cart" , as: "remove_product_quantity_from_cart", id: /\d+/
 
-  post "/summary_build", to: "home#summary_build", as: "summary_build"
-  
+  post "/login", to: "home#login", as: "login_process"
+  post "/register", to: "home#register", as:"register_process"
 
   # For details on the DSL available within this file, see http://guides.rubyonrails.org/routing.html
 end
