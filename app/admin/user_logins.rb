@@ -1,4 +1,4 @@
-ActiveAdmin.register Order do
+ActiveAdmin.register UserLogin do
 # See permitted parameters documentation:
 # https://github.com/activeadmin/activeadmin/blob/master/docs/2-resource-customization.md#setting-up-strong-parameters
 #
@@ -11,5 +11,5 @@ ActiveAdmin.register Order do
 #   permitted << :other if params[:action] == 'create' && current_user.admin?
 #   permitted
 # end
-    permit_params :pst_rate, :gst_rate, :hst_rate, :customer_id, :order_status_id
+permit_params :email, :password
 end
