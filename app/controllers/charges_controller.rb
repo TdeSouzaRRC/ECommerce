@@ -13,8 +13,10 @@ class ChargesController < ApplicationController
         #     :source  => params[:stripeToken]
         # )
     
+        customer = Customer.find(@order.customer_id)
+
         charge = Stripe::Charge.create(
-            :customer    => customer.id,
+            :customer    => customer.unique_identifier,
             :amount      => amount,
             :description => "Order No: #{@order.id}",
             :currency    => 'usd'
@@ -23,7 +25,7 @@ class ChargesController < ApplicationController
         unless charge.nil?
             session["order"] = nil
             session["cart"] = {}
-            @order.payment_id = charge.id
+            @order.payment_identifier = charge.id
             @order.order_status_id = 2 #Paid
             @order.save
         end
