@@ -8,10 +8,10 @@ class ChargesController < ApplicationController
         @total = (subtotal + @order.pst_rate*subtotal + @order.gst_rate*subtotal + @order.hst_rate*subtotal)*100
         amount = @total.to_i
     
-        customer = Stripe::Customer.create(
-            :email => params[:stripeEmail],
-            :source  => params[:stripeToken]
-        )
+        # customer = Stripe::Customer.create(
+        #     :email => params[:stripeEmail],
+        #     :source  => params[:stripeToken]
+        # )
     
         charge = Stripe::Charge.create(
             :customer    => customer.id,
@@ -20,9 +20,14 @@ class ChargesController < ApplicationController
             :currency    => 'usd'
         )
     
-        session["order"] = nil
-        session["cart"] = {}
-        
+        unless charge.nil?
+            session["order"] = nil
+            session["cart"] = {}
+            @order.payment_id = charge.id
+            @order.order_status_id = 2 #Paid
+            @order.save
+        end
+
         rescue Stripe::CardError => e
         flash[:error] = e.message
         redirect_to checkout_path

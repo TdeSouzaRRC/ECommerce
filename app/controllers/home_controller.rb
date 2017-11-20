@@ -37,6 +37,10 @@ class HomeController < ApplicationController
     if request.post?
       @customer = Customer.new(params["customer"])
       if @customer.valid?
+        customer = Stripe::Customer.create(
+          :email => params[:stripeEmail],
+          :source  => params[:stripeToken]
+        )
         redirect_to login_path
       else
         # redirect_back fallback_location: register_path
@@ -96,7 +100,8 @@ class HomeController < ApplicationController
           :pst_rate => @customer.province.pst,
           :gst_rate => @customer.province.gst,
           :hst_rate => @customer.province.hst,
-          :customer_id => @customer.id
+          :customer_id => @customer.id,
+          :order_status_id => 1
         )
         
         @order_items.each do |item|

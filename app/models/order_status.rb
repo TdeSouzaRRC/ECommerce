@@ -1,5 +1,5 @@
 class OrderStatus < ApplicationRecord
-    validates :status, required: true
-    
-    belongs_to :order
+    validates :status, presence: true
+
+    has_many :orders
 end

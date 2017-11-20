@@ -3,5 +3,5 @@ class Order < ApplicationRecord
 
     belongs_to :customer
     has_many :line_items
-    has_one :order_status
+    belongs_to :order_status
 end
