@@ -74,7 +74,7 @@ class HomeController < ApplicationController
         
         unless(product.nil?) then
           order_item = {
-            "roduct_id" => product.id,
+            "product_id" => product.id,
             "product_name" => product.name,
             "quantity" => quantity,
             "price" => product.price,
@@ -100,7 +100,7 @@ class HomeController < ApplicationController
         )
         
         @order_items.each do |item|
-          order.line_items.create(:quantity => item["quantity"], :price => item["price"], :product_id => item["product_id"])    
+          LineItem.create(:quantity => item["quantity"], :price => item["price"], :product_id => item["product_id"], :order_id => order.id)    
         end
 
         session["order"] = order.id
