@@ -49,14 +49,16 @@ class CustomersController < ApplicationController
 
         @customer.unique_identifier = customer.id
         @customer.save
-        session[:user_logged_in] = {}
+        session[:user_logged_in] = nil
         redirect_to login_path
       end
     end
   end
 
   def my_account
-    
+    if session[:user_logged_in].nil?
+      redirect_to products_path
+    end
   end
 
   def login
@@ -65,7 +67,7 @@ class CustomersController < ApplicationController
       if request.post? then
         user = UserLogin.find_by "email = ? and password = ?", params["email"], params["password"]
         unless user.nil? then
-          session[:user_logged_in] = user.customer.id
+          session[:user_logged_in] = user.id
           redirect_back fallback_location: products_path
         else
           @error_message = true
