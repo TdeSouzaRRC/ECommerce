@@ -52,6 +52,7 @@ class HomeController < ApplicationController
 
         @customer.unique_identifier = customer.id
         @customer.save
+        
         redirect_to login_path
       end
     end

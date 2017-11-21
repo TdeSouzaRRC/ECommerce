@@ -1,4 +1,6 @@
 Rails.application.routes.draw do
+  get 'customers/register'
+
   get 'products/show'
 
   devise_for :admin_users, ActiveAdmin::Devise.config
