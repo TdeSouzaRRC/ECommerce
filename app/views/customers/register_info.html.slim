@@ -1,0 +1,56 @@
+.container-fluid
+    div.row
+        div.col-md-offset-3.col-md-6
+            h3 Register
+            br
+            = form_for(@customer, url: register_info_process_path, method: :post, html: {class: "form-horizontal", id:"register_form"}) do |form|
+
+                div class="form-group"
+                    = form.label :email, class: "col-sm-2 control-label"
+                    div class="col-sm-10"
+                        = form.email_field :email, id: :customer_email
+
+                div class="form-group"
+                    = form.label :full_name, class: "col-sm-2 control-label"
+                    div class="col-sm-10"
+                        = form.text_field :full_name, id: :customer_full_name
+
+                div class="form-group"
+                    = form.label :address, class: "col-sm-2 control-label"
+                    div class="col-sm-10"
+                        = form.text_field :address, id: :customer_address
+                
+                div class="form-group"
+                    = form.label :city, class: "col-sm-2 control-label"
+                    div class="col-sm-10"
+                        = form.text_field :city, id: :customer_city
+
+                div class="form-group"
+                    = form.label :country, class: "col-sm-2 control-label"
+                    div class="col-sm-10"
+                        = form.text_field :country, id: :customer_country
+
+                div class="form-group"
+                    = form.label :postal_code, class: "col-sm-2 control-label"
+                    div class="col-sm-10"
+                        = form.text_field :postal_code, id: :customer_postal_code
+                
+                div class="form-group"
+                    = form.label :province_id, class: "col-sm-2 control-label"
+                    div class="col-sm-10"
+                        = form.select(:province_id, @provinces, {},{ class:"form-control province_dropdown"})
+                
+                div class="form-group"
+                    =form.submit "Save", class:"btn btn-default"
+                
+                br
+
+                - if @customer.errors.any?
+                    div id="error_explanation"
+                        ul class="bg-danger"
+                            - @customer.errors.full_messages.each do |message|
+                                li
+                                    p class="text-danger"
+                                        = message 
+                
+                

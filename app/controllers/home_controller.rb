@@ -2,6 +2,10 @@ class HomeController < ApplicationController
   before_action :initialize_session, only: [:index]
   
   def index
+    unless session[:user_logged_in].nil?
+      @customer_name = UserLogin.find(session[:user_logged_in]).customer.full_name
+    end
+
     @categories = Category.all.order(:name)
     @selected_category = nil;
     if params["category"] != nil then
@@ -31,52 +35,6 @@ class HomeController < ApplicationController
     @products.each do |product|
       @subtotal += product.price * session[:cart][product.id.to_s].to_i
     end
-  end
-
-  def register
-    @provinces = Province.all.map {|province| [province.name, province.id]}
-    @customer = Customer.new
-    if request.post?
-      @customer.full_name = params["customer"]["full_name"]
-      @customer.email = params["customer"]["email"]
-      @customer.address = params["customer"]["address"]
-      @customer.city = params["customer"]["city"]
-      @customer.postal_code = params["customer"]["postal_code"]
-      @customer.country = params["customer"]["country"]
-      @customer.province_id = params["customer"]["province_id"]
-
-      if @customer.valid?
-        customer = Stripe::Customer.create(
-          :email => params[:stripeEmail]
-        )
-
-        @customer.unique_identifier = customer.id
-        @customer.save
-        
-        redirect_to login_path
-      end
-    end
-
-  end
-
-  def login
-    @error_message = false
-    if request.post? then
-      user = UserLogin.find_by "email = ? and password = ?", params["email"], params["password"]
-      unless user.nil? then
-        session[:user_logged_in] = user.customer.id
-        redirect_to checkout_path
-      else
-        @error_message = true
-      end
-    end
-  end
-
-  def logout
-    if request.post?
-      session[:user_logged_in] = {}
-    end
-      redirect_to products_path
   end
 
   def checkout

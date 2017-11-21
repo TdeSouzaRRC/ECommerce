@@ -1,5 +1,6 @@
 class UserLogin < ApplicationRecord
     validates :email, :password, presence: true
-
-    belongs_to :customer
+    validates :email, uniqueness: true
+    
+    has_one :customer
 end

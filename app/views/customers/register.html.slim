@@ -1,2 +1,40 @@
-h1 Customers#register
-p Find me in app/views/customers/register.html.slim
+div.container-fluid
+    div.col-md-offset-3.col-md-6
+        = form_for(@user_login, url: "/register", method: :post, html: {class: "form-horizontal", id:"register_form"}) do |form|
+            
+            h3 Register
+            
+            br
+            
+            div class="form-group"
+                = form.label :email, class: "col-sm-2 control-label"
+                div class="col-sm-10"
+                    = form.email_field :email, id: :user_login_email
+
+            div class="form-group"
+                = form.label :password, class: "col-sm-2 control-label"
+                div class="col-sm-10"
+                    = form.password_field :password, id: :user_login_password
+            
+            div class="form-group"
+                = form.label :retype_password, class: "col-sm-2 control-label"
+                div class="col-sm-10"
+                    = form.password_field :retype_password, id: :user_login_retype_password
+            
+            br
+            
+            div class="form-group"
+                div class="col-sm-offset-5"
+                    =form.submit "Sign Up", class:"btn btn-default"
+
+            br
+
+            - if @user_login.errors.any?
+                div id="error_explanation"
+                    ul class="bg-danger"
+                        - @user_login.errors.full_messages.each do |message|
+                            li
+                                p class="text-danger"
+                                    = message 
+                
+                    
