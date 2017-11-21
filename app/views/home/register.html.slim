@@ -3,21 +3,31 @@
         div.col-md-offset-4.col-md-4
             h3 Register
             br
-            = form_with(model:@customer, url: "/register", method: :post, class: "form-horizontal", id:"register_form") do |form|
+            = form_for(@customer, url: "/register", method: :post, html: {class: "form-horizontal", id:"register_form"}) do |form|
                 - if @customer.errors.any?
                     div id="error_explanation"
-                        h2
-                            = "#{pluralize(@customer.errors.count, "error")} prohibited this test from being saved:"
-
-                        ul
+                        ul class="bg-danger"
                             - @customer.errors.full_messages.each do |message|
-                                li 
-                                    = message 
+                                li
+                                    p class="text-danger"
+                                        = message 
+                
+                br
 
                 div class="form-group"
                     = form.label :email, class: "col-sm-2 control-label"
                     div class="col-sm-10"
                         = form.email_field :email, id: :customer_email
+
+                div class="form-group"
+                    = form.label :password, class: "col-sm-2 control-label"
+                    div class="col-sm-10"
+                        = form.password_field :password, id: :customer_password
+                
+                div class="form-group"
+                    = form.label :retype_password, class: "col-sm-2 control-label"
+                    div class="col-sm-10"
+                        = form.password_field :retype_password, id: :customer_retype_password
 
                 div class="form-group"
                     = form.label :full_name, class: "col-sm-2 control-label"
@@ -47,9 +57,9 @@
                 div class="form-group"
                     = form.label :province_id, class: "col-sm-2 control-label"
                     div class="col-sm-10"
-                        = form.text_field :province_id, id: :customer_province_id
+                        = form.select(:province_id, @provinces, {},{ class:"form-control province_dropdown"})
                 
                 div class="form-group"
-                    =form.submit class:"btn btn-default"
+                    =form.submit "Sign Up", class:"btn btn-default"
                 
                     

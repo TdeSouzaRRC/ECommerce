@@ -34,19 +34,26 @@ class HomeController < ApplicationController
   end
 
   def register
+    @provinces = Province.all.map {|province| [province.name, province.id]}
+    @customer = Customer.new
     if request.post?
-      @customer = Customer.new(params["customer"])
+      @customer.full_name = params["customer"]["full_name"]
+      @customer.email = params["customer"]["email"]
+      @customer.address = params["customer"]["address"]
+      @customer.city = params["customer"]["city"]
+      @customer.postal_code = params["customer"]["postal_code"]
+      @customer.country = params["customer"]["country"]
+      @customer.province_id = params["customer"]["province_id"]
+
       if @customer.valid?
         customer = Stripe::Customer.create(
-          :email => params[:stripeEmail],
-          :source  => params[:stripeToken]
+          :email => params[:stripeEmail]
         )
+
+        @customer.unique_identifier = customer.id
+        @customer.save
         redirect_to login_path
-      else
-        # redirect_back fallback_location: register_path
       end
-    else
-      @customer = Customer.new
     end
 
   end
@@ -62,6 +69,13 @@ class HomeController < ApplicationController
         @error_message = true
       end
     end
+  end
+
+  def logout
+    if request.post?
+      session[:user_logged_in] = {}
+    end
+      redirect_to products_path
   end
 
   def checkout

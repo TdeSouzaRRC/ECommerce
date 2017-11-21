@@ -23,6 +23,7 @@ Rails.application.routes.draw do
   post "/products/:id/remove_product_quantity_from_cart", to:"products#remove_product_quantity_from_cart" , as: "remove_product_quantity_from_cart", id: /\d+/
 
   post "/login", to: "home#login", as: "login_process"
+  post "/logout", to: "home#logout", as: "logout"
   post "/register", to: "home#register", as:"register_process"
 
   resources :charges
