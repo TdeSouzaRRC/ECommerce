@@ -1,4 +1,4 @@
 class Category < ApplicationRecord
-    validates :name, :description, presence: true
-    has_many :products
+  validates :name, :description, presence: true
+  has_many :products
 end

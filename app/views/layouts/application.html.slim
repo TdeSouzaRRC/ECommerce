@@ -9,8 +9,12 @@ html
   
   body
 
-    = render "common/navbar"
+    header
+      = render "common/navbar"
     
     div.body_display  
       = yield
+
+    footer.footer
+      = render "common/footer"
   

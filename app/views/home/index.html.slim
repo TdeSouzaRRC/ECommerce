@@ -1,8 +1,8 @@
 div.container-fluid
-    div.row
+    section.row
         = render "search_form"
                         
-    div.row
+    section.row
         div.col-xs-12.col-sm-12.col-md-12.col-lg-12
             nav
                 ul.nav.nav-tabs.nav-justified    
@@ -23,5 +23,5 @@ div.container-fluid
                                 a href="?category=#{category.name}" data-id="#{category.id}" class="category_nav"
                                     = category.name
 
-    div.row
+    section.row
         = render "products/products_container", object: @products

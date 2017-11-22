@@ -1,12 +1,12 @@
 class HomeController < ApplicationController
   before_action :initialize_session, only: [:index]
-  
+
   def index
     @categories = Category.all.order(:name)
-    @selected_category = nil;
-    if params["category"] != nil then
+    @selected_category = nil
+    if !params['category'].nil?
       @categories.each do |category|
-        if category.name == params["category"] then
+        if category.name == params['category']
           @products = category.products.order(:name)
           @selected_category = category.name
         end
@@ -34,55 +34,58 @@ class HomeController < ApplicationController
   end
 
   def checkout
-    if session[:user_logged_in].nil? then
+    if session[:user_logged_in].nil?
       redirect_to login_path
     else
       @user_login = UserLogin.find(session[:user_logged_in])
       @customer = @user_login.customer
       @order_items = []
-      @subtotal = 0;
-      
+      @subtotal = 0
+
       session[:cart].keys.each do |item|
         product = Product.find(item)
         quantity = session[:cart][item].to_i
-        
-        unless(product.nil?) then
+
+        unless product.nil?
           order_item = {
-            "product_id" => product.id,
-            "product_name" => product.name,
-            "quantity" => quantity,
-            "price" => product.price,
-            "total_price" => quantity*product.price
+            'product_id' => product.id,
+            'product_name' => product.name,
+            'quantity' => quantity,
+            'price' => product.price,
+            'total_price' => quantity * product.price
           }
           @order_items << order_item
-          @subtotal += quantity*product.price
+          @subtotal += quantity * product.price
         end
       end
-      
+
       @pst = @subtotal * @customer.province.pst.to_f
       @gst = @subtotal * @customer.province.gst.to_f
       @hst = @subtotal * @customer.province.hst.to_f
       @total = @subtotal + @pst + @gst + @hst
-      
+
       # Checks if an order was not created yet
-      if session["order"].nil?
-        order = Order.create( 
-          :pst_rate => @customer.province.pst,
-          :gst_rate => @customer.province.gst,
-          :hst_rate => @customer.province.hst,
-          :customer_id => @customer.id,
-          :order_status_id => 1
+      if session['order'].nil?
+        order = Order.create(
+          pst_rate: @customer.province.pst,
+          gst_rate: @customer.province.gst,
+          hst_rate: @customer.province.hst,
+          customer_id: @customer.id,
+          order_status_id: 1
         )
-        
+
         @order_items.each do |item|
-          LineItem.create(:quantity => item["quantity"], :price => item["price"], :product_id => item["product_id"], :order_id => order.id)    
+          LineItem.create(quantity: item['quantity'],
+                          price: item['price'],
+                          product_id: item['product_id'],
+                          order_id: order.id)
         end
 
-        session["order"] = order.id
+        session['order'] = order.id
       else
         # In case of order not completed and changed
         # Updates order with new information
-        order = Order.find(session["order"]) 
+        order = Order.find(session['order'])
         order.pst_rate = @customer.province.pst
         order.gst_rate = @customer.province.gst
         order.hst_rate = @customer.province.hst
@@ -90,18 +93,20 @@ class HomeController < ApplicationController
 
         # Destroys all order items
         order.line_items.each do |item|
-          item.destroy
+            item.destroy
         end
-        
+
         # Recreates all order items
         @order_items.each do |item|
-          order.line_items.create(:quantity => item["quantity"], :price => item["price"], :product_id => item["product_id"])    
+          order.line_items.create(quantity: item['quantity'],
+                                  price: item['price'],
+                                  product_id: item['product_id'])
         end
       end
-    end    
+    end
   end
 
-  private 
+  private
 
   def initialize_session
     session[:cart] ||= {}
