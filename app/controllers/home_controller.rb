@@ -2,10 +2,6 @@ class HomeController < ApplicationController
   before_action :initialize_session, only: [:index]
   
   def index
-    unless session[:user_logged_in].nil?
-      @customer_name = UserLogin.find(session[:user_logged_in]).customer.full_name
-    end
-
     @categories = Category.all.order(:name)
     @selected_category = nil;
     if params["category"] != nil then
@@ -41,7 +37,8 @@ class HomeController < ApplicationController
     if session[:user_logged_in].nil? then
       redirect_to login_path
     else
-      @customer = Customer.find(session[:user_logged_in])
+      @user_login = UserLogin.find(session[:user_logged_in])
+      @customer = @user_login.customer
       @order_items = []
       @subtotal = 0;
       

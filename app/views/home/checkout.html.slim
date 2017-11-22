@@ -57,5 +57,5 @@
                     label class="amount"
                         span = "Amount: #{format("$ %.2f", @total.to_f)}"
 
-                script src="https://checkout.stripe.com/checkout.js" class="stripe-button" data-key= "#{Rails.configuration.stripe[:publishable_key].to_s}" data-description="Ice Sculptures" data-amount="#{(@total*100).to_i}" data-locale="auto" data-zip-code="true"
+                script src="https://checkout.stripe.com/checkout.js" class="stripe-button" data-key= "#{Rails.configuration.stripe[:publishable_key].to_s}" data-description="Ice Sculptures" data-amount="#{(@total*100).to_i}" data-locale="auto" data-zip-code="true" data-email="#{@customer.email}"
                 

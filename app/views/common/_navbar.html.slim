@@ -24,7 +24,7 @@ nav class="navbar navbar-default"
           li
             = link_to "Logout", logout_path, method: :post
           li
-            = link_to "Welcome, #{@customer_name}.", my_account_path
+            = link_to "Welcome, #{session["user_name"]}.", my_account_path
         
       ul class="nav navbar-nav navbar-right"
         li

@@ -12,18 +12,22 @@ class CustomersController < ApplicationController
 
       unless @user_login.errors.any? 
         @user_login.save
-        session[:user_logged_in] = @user_login.id
+        session[:user_register_in] = @user_login.id
         redirect_to register_info_path(@user_login)
       end
     end
   end
 
   def register_info
-    if session[:user_logged_in].nil?
+    if session[:user_register_in].nil? && session[:user_logged_in].nil?
       redirect_to products_path
     end
 
-    @user_login = UserLogin.find(session[:user_logged_in])
+    if(session[:user_logged_in].nil?)
+      @user_login = UserLogin.find(session[:user_register_in])
+    else
+      @user_login = UserLogin.find(session[:user_logged_in])
+    end
     @provinces = Province.all.map {|province| [province.name, province.id]}
     
     if @user_login.customer.nil?
@@ -44,12 +48,12 @@ class CustomersController < ApplicationController
 
       if @customer.valid?
         customer = Stripe::Customer.create(
-          :email => params[:stripeEmail]
+          :email => @customer.email
         )
 
         @customer.unique_identifier = customer.id
         @customer.save
-        session[:user_logged_in] = nil
+        session[:user_register_in] = nil
         redirect_to login_path
       end
     end
@@ -64,10 +68,11 @@ class CustomersController < ApplicationController
   def login
     if session[:user_logged_in].nil?
       @error_message = false
-      if request.post? then
+      if request.post?
         user = UserLogin.find_by "email = ? and password = ?", params["email"], params["password"]
-        unless user.nil? then
+        unless user.nil?
           session[:user_logged_in] = user.id
+          session[:user_name] = user.customer.full_name
           redirect_back fallback_location: products_path
         else
           @error_message = true
@@ -81,6 +86,7 @@ class CustomersController < ApplicationController
   def logout
     if request.post?
       session[:user_logged_in] = nil
+      session[:user_name] = nil
     end
       redirect_to products_path
   end

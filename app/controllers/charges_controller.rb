@@ -8,18 +8,20 @@ class ChargesController < ApplicationController
         @total = (subtotal + @order.pst_rate*subtotal + @order.gst_rate*subtotal + @order.hst_rate*subtotal)*100
         amount = @total.to_i
     
-        # customer = Stripe::Customer.create(
-        #     :email => params[:stripeEmail],
-        #     :source  => params[:stripeToken]
-        # )
-    
         customer = Customer.find(@order.customer_id)
+
+        stripe_customer = Stripe::Customer.retrieve(customer.unique_identifier)
+
+        if(stripe_customer.sources.empty?)
+            stripe_customer.source= params[:stripeToken]
+            stripe_customer.save
+        end
 
         charge = Stripe::Charge.create(
             :customer    => customer.unique_identifier,
             :amount      => amount,
             :description => "Order No: #{@order.id}",
-            :currency    => 'usd'
+            :currency    => 'cad'
         )
     
         unless charge.nil?
